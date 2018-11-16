@@ -32,7 +32,7 @@ eos.transaction({
 },
 {
     broadcast: broadcast,
-).then(function (value){
+}).then(function (value){
         console.log(JSON.stringify(value));
         return value;
       }).catch(function (e) {
