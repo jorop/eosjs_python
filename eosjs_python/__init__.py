@@ -49,11 +49,11 @@ class Eos:
         else:
             raise CreateAccountException(response.stderr)
 
-    def push_transaction(self, acct_contract, func_name, acct_owner, permission, data):
+    def push_transaction(self, acct_contract, func_name, acct_owner, permission, data, broadcast=True):
         """
 		node PushContractTransaction.js 'http://127.0.0.1:8888' '5JhhMGNPsuU52XXjZ57FcDKvbb7KLrEhN65tdTQFrH51uruZLHi' 'eosio.token' 'transfer' 'eva' 'active' '{"from":"eva","to":"rider1","quantity":"1 EVA","memo":""}'
 		"""
-        arguments = "'%s' '%s' '%s' '%s' '%s' '%s' '%s' '%s'" % (
+        arguments = "'%s' '%s' '%s' '%s' '%s' '%s' '%s' '%s' '%s'" % (
             self.http_address,
             self.chain_id,
             self.key_provider,
@@ -61,7 +61,8 @@ class Eos:
             func_name,
             acct_owner,
             permission,
-            json.dumps(data)
+            json.dumps(data),
+            int(broadcast)
         )
         response = muterun_js(self.current_dir + '/js/PushContractTransaction.js', arguments=arguments)
         if response.exitcode == 0:

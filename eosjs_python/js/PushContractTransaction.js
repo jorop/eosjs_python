@@ -8,6 +8,7 @@ const contract_function = process.argv[6];
 const authorization_actor = process.argv[7];
 const authorization_permission = process.argv[8];
 const data_values = JSON.parse(process.argv[9]);
+const broadcast = process.argv[10];
 
 eos = Eos({
   keyProvider: wif,
@@ -28,7 +29,10 @@ eos.transaction({
       data: data_values
     }
   ]
-}).then(function (value){
+},
+{
+    broadcast: broadcast,
+).then(function (value){
         console.log(JSON.stringify(value));
         return value;
       }).catch(function (e) {
