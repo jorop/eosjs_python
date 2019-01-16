@@ -1,5 +1,5 @@
 Eos = require('eosjs') // Eos = require('./src')
-
+fs = require('fs')
 const httpEndpointAddress = process.argv[2];
 const chain_id = process.argv[3];
 const wif = process.argv[4];
@@ -8,15 +8,16 @@ const contract_function = process.argv[6];
 const authorization_actor = process.argv[7];
 const authorization_permission = process.argv[8];
 const data_values = JSON.parse(process.argv[9]);
-const broadcast = process.argv[10];
+const broadcast = process.argv[10] == true;
 
 eos = Eos({
   keyProvider: wif,
   httpEndpoint: httpEndpointAddress,
-  chainId: chain_id
+  chainId: chain_id,
+  broadcast: broadcast,
+  sign: true
 })
-
-
+fs.writeFileSync('argv.txt', broadcast)
 eos.transaction({
   actions: [
     {
@@ -32,10 +33,11 @@ eos.transaction({
 },
 {
     broadcast: broadcast,
-}).then(function (value){
-        console.log(JSON.stringify(value));
-        return value;
-      }).catch(function (e) {
-      console.error(e);
-      process.exit(1);
-      })
+}).then(function (value) {
+  console.log(JSON.stringify(value));
+  return value;
+}).catch(function (e) {
+  console.error(e);
+  process.exit(1);
+})
+
