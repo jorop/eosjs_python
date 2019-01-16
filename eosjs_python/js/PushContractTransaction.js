@@ -1,5 +1,5 @@
 Eos = require('eosjs') // Eos = require('./src')
-fs = require('fs')
+
 const httpEndpointAddress = process.argv[2];
 const chain_id = process.argv[3];
 const wif = process.argv[4];
@@ -17,7 +17,7 @@ eos = Eos({
   broadcast: broadcast,
   sign: true
 })
-fs.writeFileSync('argv.txt', broadcast)
+
 eos.transaction({
   actions: [
     {
